@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 public class JavaFXTemplate extends Application {
 	private MenuBar menu;
 	public int count = 1;
+	// 2D array that holds all the buttons
+	public GameButton[][] buttons = new GameButton[7][6];
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -29,6 +31,7 @@ public class JavaFXTemplate extends Application {
 	//feel free to remove the starter code from this method
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+
 		// TODO Auto-generated method stub
 		primaryStage.setTitle("Welcome to Connect Four!");
 		ObservableList<String> stats = FXCollections.observableArrayList();
@@ -60,14 +63,13 @@ public class JavaFXTemplate extends Application {
 		mTwo.getItems().addAll(theme1, theme2, theme3);
 		mThree.getItems().addAll(reverse);
 		
-
 		
 		// GridPane
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		addGrid(grid, turn);
+		addGrid(grid, turn, stats);
 		
 		//HBox for turnList
 		HBox turnBox = new HBox(turnList);
@@ -100,33 +102,52 @@ public class JavaFXTemplate extends Application {
 		count = 1;
 	}
 	
-	public void checkTurn(ObservableList<String> turn, GameButton b1) {
+	public void checkTurn(GridPane grid, ObservableList<String> turn, GameButton b1, ObservableList<String> stats) {
 		//System.out.println("button pressed: " + ((Button)e.getSource()).getText());
 		if (count%2 == 0) {
-			turn.add("Player 1's turn");
+			//turn.add("Player 1's turn");
+			b1.setPlayer(1);
 			
 		} else {
-			turn.add("Player 2's turn");
-			
+			//turn.add("Player 2's turn");
+			b1.setPlayer(2);
 		}
-		count++;
-		b1.setDisable(validMove(b1, stats));
+		if(validMove(grid,b1, stats)== true){
+			count++;
+		}
+		b1.setDisable(validMove(grid, b1, stats));
 	}
 	
-	private boolean validMove(GameButton b1, ObservableList<String> stats) {
-		
+	//checks if button pressed is a valid move in game
+	private boolean validMove(GridPane grid, GameButton b1, ObservableList<String> stats) {
+		if (b1.getRow() == 5) { //allows only bottom row to be clicked at start of game
+			b1.setClicked(true);
+			setPlayerColor(b1, grid);
+			return true;
+		}
+		else if (buttons[b1.getCol()][b1.getRow() + 1].getClicked() == true) { //checks if button underneath is pressed
+			b1.setClicked(true);
+			setPlayerColor(b1, grid);
+			return true;
+		}
 		return false;
 	}
-
-	public void addGrid(GridPane grid, ObservableList<String> turn) {
-		
+	public void setPlayerColor(GameButton b1, GridPane grid){
+		if(b1.getPlayer()==1){
+			b1.setStyle("-fx-background-color: Red");
+		}else if(b1.getPlayer()==2){
+			b1.setStyle("-fx-background-color: Yellow");
+		}
+	}
+	public void addGrid(GridPane grid, ObservableList<String> turn, ObservableList<String> stats) {
 		for(int x = 0; x<7; x++) { // column
 			for(int i = 0; i<6; i++) { // row
 				GameButton b1 = new GameButton(x,i);
+				buttons[x][i] = b1; //populates buttons to 2d array of buttons
 				b1.setPrefSize(100, 100);
-				b1.setOnAction(e->checkTurn(turn, b1));
+				b1.setOnAction(e->checkTurn(grid, turn, b1, stats));
 				b1.setStyle("-fx-background-color: lightBlue;" + "-fx-border-color: black;");
-				grid.add(b1, x, i);
+				grid.add(b1, x, i); // adding buttons to grid
 				 
 			}
 		}
