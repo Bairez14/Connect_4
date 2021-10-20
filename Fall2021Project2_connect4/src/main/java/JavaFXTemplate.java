@@ -8,6 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 
 public class JavaFXTemplate extends Application {
 	private MenuBar menu;
+	public int count = 1;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -38,6 +40,7 @@ public class JavaFXTemplate extends Application {
 		turnList.setPrefWidth(500);
 		turnList.setPrefHeight(100);
 		turnList.setOrientation(Orientation.HORIZONTAL);
+		turn.add("Player 1's turn");
 
 		
 		// Menu bar
@@ -64,7 +67,7 @@ public class JavaFXTemplate extends Application {
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		addGrid(grid, stats);
+		addGrid(grid, turn);
 		
 		//HBox for turnList
 		HBox turnBox = new HBox(turnList);
@@ -74,24 +77,60 @@ public class JavaFXTemplate extends Application {
 		HBox layout = new HBox(grid, gameStats);
 		layout.setAlignment(Pos.CENTER);
 		layout.setSpacing(50);
-				
+		
+		//Scene 
 		Scene scene = new Scene(new VBox(40, menu, layout, turnBox), 1000,1000);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		//EventHandlers
+		iOne.setOnAction(e-> resetGame(turn,grid));
+		iTwo.setOnAction(e-> System.exit(0));
+		
 	}
-	public void addGrid(GridPane grid, ObservableList<String> events) {
+	
+	public void resetGame(ObservableList<String> turn, GridPane grid) {
+		for(Node n: grid.getChildren()) {
+			GameButton temp = (GameButton) n;
+			temp.setText("");
+			temp.setDisable(false);
+		}
+		turn.clear();
+		turn.add("Player 1 goes first");
+		count = 1;
+	}
+	
+	public void checkTurn(ObservableList<String> turn, GameButton b1) {
+		//System.out.println("button pressed: " + ((Button)e.getSource()).getText());
+		if (count%2 == 0) {
+			turn.add("Player 1's turn");
 			
-			for(int x = 0; x<6; x++) {
-				for(int i = 0; i<7; i++) {
-					Button b1 = new Button();
-					b1.setPrefSize(100, 100);
-					//b1.setOnAction(e->checkTurn(events, b1));
-					b1.setStyle("-fx-background-color: lightBlue;" + "-fx-border-color: black;");
-					grid.add(b1, x, i);
-					 
-				}
-			}
+		} else {
+			turn.add("Player 2's turn");
+			
+		}
+		count++;
+		b1.setDisable(validMove(b1, stats));
 	}
+	
+	private boolean validMove(GameButton b1, ObservableList<String> stats) {
+		
+		return false;
+	}
+
+	public void addGrid(GridPane grid, ObservableList<String> turn) {
+		
+		for(int x = 0; x<7; x++) { // column
+			for(int i = 0; i<6; i++) { // row
+				GameButton b1 = new GameButton(x,i);
+				b1.setPrefSize(100, 100);
+				b1.setOnAction(e->checkTurn(turn, b1));
+				b1.setStyle("-fx-background-color: lightBlue;" + "-fx-border-color: black;");
+				grid.add(b1, x, i);
+				 
+			}
+		}
+}
 	
 }
 

@@ -1,40 +1,56 @@
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
+
 public class GameLogic {
-	private ArrayList<Coordinates> p1;
-	private ArrayList<Coordinates> p2;
-	
+	private ArrayList<GameButton> playerMoves;
+
 	GameLogic() {
-		p1 = new ArrayList();
-		p2 = new ArrayList();
+		playerMoves = new ArrayList();
 	}
-	
-	
+
 	class Coordinates {
 		private Integer row;
 		private Integer col;
-		
-		Coordinates(int row, int col) {
+
+		Coordinates(int col, int row) {
 			this.col = col;
 			this.row = row;
 		}
-		
-		public void setRow (int row) {
+
+		public void setRow(int row) {
 			this.row = row;
 		}
-		
+
 		public int getRow() {
 			return this.row;
 		}
-		
+
 		public void setCol(int col) {
 			this.col = col;
 		}
-		
+
 		public int getCol() {
 			return this.col;
 		}
+
+		public boolean winVertical(int col, int row) {
+			return true;
+		}
+
+		public boolean winHorizontal(int col, int row) {
+			return true;
+		}
+
+		public boolean winDiagonal(int col, int row) {
+			return true;
+		}
+
+		public boolean gameTie() {
+			return true;
+		}
 	}
 }
-
-
