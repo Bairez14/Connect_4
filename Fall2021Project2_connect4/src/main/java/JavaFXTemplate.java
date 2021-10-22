@@ -24,7 +24,6 @@ public class JavaFXTemplate extends Application {
 	public GameButton[][] buttons = new GameButton[7][6];
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		launch(args);
 	}
 
@@ -112,7 +111,7 @@ public class JavaFXTemplate extends Application {
 			//turn.add("Player 2's turn");
 			b1.setPlayer(2);
 		}
-		if(validMove(grid,b1, stats)== true){
+		if(validMove(grid, b1, stats) == true){
 			count++;
 		}
 		b1.setDisable(validMove(grid, b1, stats));
@@ -120,14 +119,17 @@ public class JavaFXTemplate extends Application {
 	
 	//checks if button pressed is a valid move in game
 	private boolean validMove(GridPane grid, GameButton b1, ObservableList<String> stats) {
+		GameLogic game = new GameLogic();
 		if (b1.getRow() == 5) { //allows only bottom row to be clicked at start of game
 			b1.setClicked(true);
 			setPlayerColor(b1, grid);
+			//game.win(buttons, b1);
 			return true;
 		}
 		else if (buttons[b1.getCol()][b1.getRow() + 1].getClicked() == true) { //checks if button underneath is pressed
 			b1.setClicked(true);
 			setPlayerColor(b1, grid);
+			game.win(buttons, b1);
 			return true;
 		}
 		return false;
@@ -151,7 +153,7 @@ public class JavaFXTemplate extends Application {
 				 
 			}
 		}
-}
+	}
 	
 }
 

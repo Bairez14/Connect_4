@@ -10,8 +10,8 @@ public class GameButton extends Button {
 	GameButton(int col, int row) {
 		this.row = row;
 		this.col = col;
-		player = 0;
-		clicked = false;
+		this.player = 0;
+		this.clicked = false;
 	}
 
 	public int getRow() {
