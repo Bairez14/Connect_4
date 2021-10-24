@@ -12,6 +12,14 @@ public class GameLogic {
 		playerMoves = new ArrayList<GameButton>();
 	}
 
+	public void setPlayerMoves(ArrayList<GameButton> moves){
+		this.playerMoves = moves;
+	}
+
+	public ArrayList<GameButton> getPlayerMoves() {
+		return playerMoves;
+	}
+
 	public boolean winVertical(GameButton[][] buttons, GameButton b1) {
 		int counter = 1;
 		int p = b1.getPlayer();
@@ -51,13 +59,12 @@ public class GameLogic {
 
 	public boolean winDiagonalUp(GameButton[][] buttons, GameButton b1) {
 		GameButton temp = b1;
-		GameButton start = diagonalHelper1(temp);
 		int counter = 0;
 		int p = b1.getPlayer(); // keeps track of player
-
+		GameButton start = diagonalHelper1(temp, p);
 		if (start.getRow() > 2) { // diagonal win can only happen when the row is greater than 2
 			return false;
-		} else {
+		} //else {
 			if (buttons[start.getCol()][start.getRow()].getPlayer() == p) {
 				counter++;
 			}
@@ -76,64 +83,124 @@ public class GameLogic {
 					return true;
 				}
 			}
-		}
+		//}
 		return false;
 	}
 
 	public boolean winDiagonalDown(GameButton[][] buttons, GameButton b1) {
-		GameButton temp = b1;
-		GameButton start = diagonalHelper2(temp);
 		int counter = 0;
-		int p = b1.getPlayer(); // keeps track of player
-
-		System.out.println("(" + temp.getCol() + ", " + temp.getRow() + ")");
-
-		if (start.getRow() > 2) { // diagonal win can only happen when the row is greater than 2
-			return false;
-		} else {
-			if (buttons[start.getCol()][start.getRow()].getPlayer() == p) { // checks first case
-				counter++;
-			}
-			while ((start.getCol() != 1) && (start.getRow() != 5)) {
-				System.out.println("(" + start.getCol() + ", " + start.getRow() + ")");
-				start.setCol(start.getCol() - 1);
-				start.setRow(start.getRow() + 1);
-				if (buttons[start.getCol()][start.getRow()].getPlayer() == p) {
+		int traverse = 1;
+		int p = b1.getPlayer();
+		int r = b1.getRow();
+		int c = b1.getCol();
+		if (r < 5) {
+			//return false;	 
+			System.out.println("( " + (c - traverse) + ", " + (r + traverse) + ")");
+			// if the last move was top upper rightmost
+			while ((r + traverse <= 5) && (c - traverse <= 0)) {
+				if (buttons[b1.getCol() - traverse][b1.getRow() + traverse].getPlayer() == p) {
+					System.out.println("( " + (c - traverse) + ", " + (r + traverse) + ")");
 					counter++;
-				} else {
-					counter = 0;
+					traverse++;
 				}
-				System.out.println("counter: " + counter);
-
-				if (counter == 4) {
-					System.out.println("Diagonal Down win!!!");
-					return true;
-				}
+			}
+			System.out.println("counter: " + counter);
+			if (counter >= 3) {
+				return true;
 			}
 		}
+			// traverse = 1; // resetting travers to check upwards
+			// while (buttons[b1.getCol() + traverse][b1.getRow() - traverse].getPlayer() == p) {
+			// 	counter++;
+			// 	traverse++;
+			// }
+			// if (counter == 3) {
+			// 	return true;
+			// }
+			// // last move was left downward most
+			// if (counter == 0) {
+			// 	if (buttons[c + 1][r - 1].getPlayer() == p && buttons[c + 2][r - 2].getPlayer() == p 
+			// 			&& buttons[c + 3][r - 3].getPlayer() == p) {
+			// 		return true;
+			// 	}
+			// }
+			// // had 1 button of type b1 under
+			// // we must now check 2 buttons above original
+			// if (counter == 1) {
+			// 	// the two right from original button whic is b1
+			// 	if (buttons[c + 1][r - 1].getPlayer() == p && buttons[c + 2][r - 2].getPlayer() == p) {
+			// 		return true;
+			// 	}
+			// }
+			// // had 2 buttons of type b1 under
+			// // check one above
+			// if (counter == 2) {
+			// 	if (buttons[c + 1][r - 1].getPlayer() == p) {
+			// 		return true;
+			// 	}
+			// }
+			
 		return false;
 	}
 
+	/************************ METHOD 2  *************************************************/
+	// 	GameButton temp = b1;
+		
+	// 	int counter = 0;
+	// 	int traverse = 1;
+	// 	int p = b1.getPlayer(); // keeps track of player
+	// 	GameButton start = diagonalHelper2(temp, p);
+	// 	//System.out.println("(" + temp.getCol() + ", " + temp.getRow() + ")");
+
+	// 	if (start.getRow() > 2) { // diagonal win can only happen when the row is greater than 2
+	// 		return false;
+	// 	} // else {
+	// 		if (buttons[start.getCol()][start.getRow()].getPlayer() == p) { // checks first case
+	// 			counter++;
+	// 		}
+	// 		while ((start.getCol()-traverse != 1) && (start.getRow()+traverse != 5) && (start.getCol() != 0) && (start.getRow() != 0)) {
+	// 			System.out.println("(" + start.getCol() + ", " + start.getRow() + ")");
+	// 			// start.setCol(start.getCol() - 1);
+	// 			// start.setRow(start.getRow() + 1);
+
+	// 			if (buttons[start.getCol() - traverse][start.getRow() + traverse].getPlayer() == p) {
+	// 				traverse++;
+	// 				counter++;
+	// 			} else {
+	// 				counter = 0;
+	// 			}
+	// 			System.out.println("counter: " + counter);
+
+	// 			if (counter == 4) {
+	// 				System.out.println("Diagonal Down win!!!");
+	// 				return true;
+	// 			}
+	// 		}
+	// 		//}
+	// 		return false;
+		
+	// }
+
 	// helper function for winDiagonalUP
-	// Sets pointer to left most diagonal place
-	public GameButton diagonalHelper1(GameButton b1) {
-		while (b1.getCol() != 0 && b1.getRow() != 0) {
+	// Sets pointer to up left most diagonal place
+	public GameButton diagonalHelper1(GameButton temp, int p) {
+		while (temp.getPlayer() != p) {//temp.getPlayer() && temp.getRow() != 0
 			// System.out.println("(" + b1.getCol() + ", " + b1.getRow() + ")");
-			b1.setCol(b1.getCol() - 1);
-			b1.setRow(b1.getRow() - 1);
+			temp.setCol(temp.getCol() - 1);
+			temp.setRow(temp.getRow() - 1);
 		}
-		return b1;
+		return temp;
 	}
 
 	// helper function for winDiagonalDown
-	// Sets pointer to right most diagonal place
-	public GameButton diagonalHelper2(GameButton b1) {
-		while (b1.getCol() != 6 && b1.getRow() != 0) {
+	// Sets pointer to up right most diagonal place
+	public GameButton diagonalHelper2(GameButton temp, int p) {
+		while (temp.getPlayer() != p) {
 			// System.out.println("(" + b1.getCol() + ", " + b1.getRow() + ")");
-			b1.setCol(b1.getCol() + 1);
-			b1.setRow(b1.getRow() - 1);
+			temp.setCol(temp.getCol() + 1);
+			temp.setRow(temp.getRow() - 1);
 		}
-		return b1;
+		return temp;
 	}
 
 	public boolean gameTie(GameButton[][] buttons) {
@@ -149,10 +216,12 @@ public class GameLogic {
 	}
 
 	public void win(GameButton[][] buttons, GameButton b1) {
-		// Was testing one type of win at a time
-
-		if (winVertical(buttons, b1) || winHorizontal(buttons, b1) || winDiagonalDown(buttons, b1)
-				|| winDiagonalUp(buttons, b1) || gameTie(buttons)) {
+		if (winVertical(buttons, b1)
+				|| winHorizontal(buttons, b1)
+			//	|| winDiagonalDown(buttons, b1)
+			//	|| winDiagonalUp(buttons, b1)) {
+				|| gameTie(buttons)
+			) {
 			System.out.println("WINNER");
 		} else {
 			System.out.println("Keep going");
