@@ -94,8 +94,16 @@ public class GameLogic {
 		int r = b1.getRow();
 		int c = b1.getCol();
 		if (r < 5) {
-			//return false;	 
-			System.out.println("( " + (c - traverse) + ", " + (r + traverse) + ")");
+			traverse = 1; // resetting travers to check upwards
+			while (buttons[b1.getCol() + traverse][b1.getRow() - traverse].getPlayer() == p) {
+				counter++;
+				traverse++;
+			}
+			if (counter >= 3) {
+				return true;
+			}
+		} else {
+			//System.out.println("( " + (c - traverse) + ", " + (r + traverse) + ")");
 			// if the last move was top upper rightmost
 			while ((r + traverse <= 5) && (c - traverse <= 0)) {
 				if (buttons[b1.getCol() - traverse][b1.getRow() + traverse].getPlayer() == p) {
@@ -108,22 +116,23 @@ public class GameLogic {
 			if (counter >= 3) {
 				return true;
 			}
+
+			traverse = 1; // resetting travers to check upwards
+			while (buttons[b1.getCol() + traverse][b1.getRow() - traverse].getPlayer() == p) {
+				counter++;
+				traverse++;
+			}
+			if (counter >= 3) {
+				return true;
+			}
 		}
-			// traverse = 1; // resetting travers to check upwards
-			// while (buttons[b1.getCol() + traverse][b1.getRow() - traverse].getPlayer() == p) {
-			// 	counter++;
-			// 	traverse++;
-			// }
-			// if (counter == 3) {
-			// 	return true;
-			// }
-			// // last move was left downward most
+			// last move was left downward most
 			// if (counter == 0) {
 			// 	if (buttons[c + 1][r - 1].getPlayer() == p && buttons[c + 2][r - 2].getPlayer() == p 
 			// 			&& buttons[c + 3][r - 3].getPlayer() == p) {
 			// 		return true;
 			// 	}
-			// }
+			//  }
 			// // had 1 button of type b1 under
 			// // we must now check 2 buttons above original
 			// if (counter == 1) {
@@ -218,11 +227,13 @@ public class GameLogic {
 	public void win(GameButton[][] buttons, GameButton b1) {
 		if (winVertical(buttons, b1)
 				|| winHorizontal(buttons, b1)
-			//	|| winDiagonalDown(buttons, b1)
+				|| winDiagonalDown(buttons, b1)
 			//	|| winDiagonalUp(buttons, b1)) {
-				|| gameTie(buttons)
+			//	|| gameTie(buttons)
 			) {
 			System.out.println("WINNER");
+		} else if (gameTie(buttons)){
+			System.out.println("Game Tie!!");
 		} else {
 			System.out.println("Keep going");
 		}
