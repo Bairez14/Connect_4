@@ -58,7 +58,7 @@ public class JavaFXTemplate extends Application {
 		pane.setBottom(cajita);
 
 		Scene startScene = new Scene(new VBox(40, cajita), 1000, 1000);
-		startScene.getRoot().setStyle("-fx-background-image: url(https://ppld.librarymarket.com/sites/default/files/2019-01/retro%20video%20game%20image.jpg?auto=format&fit=max&w=2000);");
+		startScene.getRoot().setStyle("-fx-font-family: 'serif';"+"-fx-background-image: url(https://ppld.librarymarket.com/sites/default/files/2019-01/retro%20video%20game%20image.jpg?auto=format&fit=max&w=2000);");
 		primaryStage.setScene(startScene);
 		
 		begin.setOnAction(e -> primaryStage.setScene(gamingScene(startScene, primaryStage)));
@@ -214,7 +214,7 @@ public class JavaFXTemplate extends Application {
 
 		// creates the scene
 		Scene scene = new Scene(new VBox(40, menu, layout, turnBox), 1000, 1000);
-		scene.getRoot().setStyle("-fx-background-color: black;");
+		scene.getRoot().setStyle("-fx-font-family: 'serif';" + "-fx-background-color: black;");
 		primaryStage.setScene(scene);
 
 		// EventHandlers
@@ -225,28 +225,25 @@ public class JavaFXTemplate extends Application {
 		theme1.setOnAction(e -> primaryStage.setScene(setTheme1(scene)));
 		theme2.setOnAction(e -> primaryStage.setScene(setTheme2(scene)));
 		theme3.setOnAction(e -> primaryStage.setScene(setTheme3(scene)));
+		
 		return scene;
 	}
 
 	public Scene setTheme1(Scene scene) {
-		Image image = new Image(
-				"https://www.teahub.io/photos/full/203-2033195_hd-wallpaper-chicago-desktop-backgrounds.jpg", 1000, 1000, false, false);
-		ImageView imageView = new ImageView();
-		imageView.setImage(image);
-		scene.getRoot().setStyle("-fx-background-image: url(https://www.teahub.io/photos/full/203-2033195_hd-wallpaper-chicago-desktop-backgrounds.jpg);");
+		scene.getRoot().setStyle("-fx-font-family: 'serif';"+"-fx-background-image: url(https://www.teahub.io/photos/full/203-2033195_hd-wallpaper-chicago-desktop-backgrounds.jpg);");
 		return scene;
 		// https://www.teahub.io/photos/full/203-2033195_hd-wallpaper-chicago-desktop-backgrounds.jpg
 	}
 
 	public Scene setTheme2(Scene scene) {
-		scene.getRoot().setStyle("-fx-background-image: url(https://assets.bigcartel.com/product_images/173492974/Kanye_Bear.jpeg?auto=format&fit=max&w=max);");
+		scene.getRoot().setStyle("-fx-font-family: 'serif';"+"-fx-background-image: url(https://assets.bigcartel.com/product_images/173492974/Kanye_Bear.jpeg?auto=format&fit=max&w=max);");
 
 		return scene;
 	}
 
 	//Original default theme
 	public Scene setTheme3(Scene scene) {
-		scene.getRoot().setStyle("-fx-background-color: black;");
+		scene.getRoot().setStyle("-fx-font-family: 'serif';"+"-fx-background-color: black;");
 
 		return scene;
 	}
@@ -284,7 +281,7 @@ public class JavaFXTemplate extends Application {
 		pane.setCenter(botones);
 
 		Scene stageScene = new Scene(pane, 600, 600);
-		stageScene.getRoot().setStyle("-fx-font-family: 'Dekko';" + "-fx-background-image: url(https://c.tenor.com/s9yLYzDwk78AAAAC/%E3%81%8A%E3%82%81%E3%81%A7%E3%81%A8%E3%81%86-%E5%AC%89%E3%81%97%E3%81%84.gif?auto=format&fit=600&w=600);");//?auto=format&fit=max&w=max
+		stageScene.getRoot().setStyle("-fx-font-family: 'serif';" + "-fx-background-image: url(https://c.tenor.com/s9yLYzDwk78AAAAC/%E3%81%8A%E3%82%81%E3%81%A7%E3%81%A8%E3%81%86-%E5%AC%89%E3%81%97%E3%81%84.gif?auto=format&fit=600&w=600);");//?auto=format&fit=max&w=max
 		newStage.setScene(stageScene);
 		newStage.show();	
 	}
@@ -311,7 +308,7 @@ public class JavaFXTemplate extends Application {
 		pane.setCenter(box);
 
 		Scene stageScene = new Scene(pane, 500, 630);
-		stageScene.getRoot().setStyle("-fx-background-image: url(https://i.pinimg.com/originals/21/ce/35/21ce35c56f6506f628c9eef26d1d462d.gif?auto=format&fit=max&w=max);");//?auto=format&fit=max&w=max
+		stageScene.getRoot().setStyle("-fx-font-family: 'serif';" +"-fx-background-image: url(https://i.pinimg.com/originals/21/ce/35/21ce35c56f6506f628c9eef26d1d462d.gif?auto=format&fit=max&w=max);");//?auto=format&fit=max&w=max
 
 		//
 		newStage.setScene(stageScene);
