@@ -6,18 +6,38 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 public class GameLogic {
-	private ArrayList<GameButton> playerMoves;
+	ArrayList<GameButton> playerMoves;
+	ArrayList<GameButton> winningButtons;
+	boolean tie;
 
 	GameLogic() {
 		playerMoves = new ArrayList<GameButton>();
+		winningButtons = new ArrayList<GameButton>();
+		this.tie = false;
+	}
+
+	public void setTie(boolean t){
+		this.tie = t;
+	}
+
+	public boolean getTie(){
+		return this.tie;
 	}
 
 	public void setPlayerMoves(ArrayList<GameButton> moves) {
-		this.playerMoves = moves;
+		playerMoves = moves;
 	}
 
 	public ArrayList<GameButton> getPlayerMoves() {
 		return playerMoves;
+	}
+
+	public void setWinningButtons(ArrayList<GameButton> b) {
+		winningButtons = b;
+	}
+
+	public ArrayList<GameButton> getWinningButtons() {
+		return winningButtons;
 	}
 
 	public boolean winVertical(GameButton[][] buttons, GameButton b1) {
@@ -33,6 +53,7 @@ public class GameLogic {
 					return false;
 				}
 				counter++;
+				//winningButtons.add(b1);
 			}
 			//System.out.println("Vertical win!!!");
 			return true;
@@ -48,7 +69,7 @@ public class GameLogic {
 			} else {
 				counter = 0;
 			}
-
+			
 			if (counter == 4) {
 				//System.out.println("Horizontal win!!!");
 				return true;
@@ -75,11 +96,9 @@ public class GameLogic {
 		if (c == 6 || r == 5) {
 			for (int i = 0; i < 4; i++) {
 				if (buttons[c - i][r - i].getPlayer() != p) {
-					//System.out.println("First if");
-					//System.out.println("( " + (c + traverse) + ", " + (r - traverse) + ")");
-					//System.out.println("Player: " + b1.getPlayer());
 					return false;
 				}
+				//winningButtons.add(b1);
 			}
 			return true;
 		} else if (c == 0 || r == 0) { // Check diagonally down since we would be starting at either col = 6 or row = 0
@@ -87,6 +106,7 @@ public class GameLogic {
 				if (buttons[c + i][r + i].getPlayer() != p) {
 					return false;
 				}
+				//winningButtons.add(b1);
 			}
 			return true;
 		} else {
@@ -94,6 +114,7 @@ public class GameLogic {
 				if (buttons[c + traverse][r + traverse].getPlayer() == p) {
 					counter++;
 					traverse++;
+					//winningButtons.add(b1);
 				} else if (counter >= 3) {
 					return true;
 				} else {
@@ -109,6 +130,7 @@ public class GameLogic {
 				if (buttons[c - traverse][r - traverse].getPlayer() == p) {
 					traverse++;
 					counter++;
+					//winningButtons.add(b1);
 				} else if (counter >= 3) {
 					return true;
 				} else {
@@ -139,11 +161,9 @@ public class GameLogic {
 		if (c == 0 || r == 5) {
 			for (int i = 0; i < 4; i++) {
 				if (buttons[c + i][r - i].getPlayer() != p) {
-					//System.out.println("First if");
-					//System.out.println("( " + (c + traverse) + ", " + (r - traverse) + ")");
-					//System.out.println("Player: " + b1.getPlayer());
 					return false;
 				}
+				//winningButtons.add(b1);
 			}
 			return true;
 		} else if (c == 6 || r == 0) { // Check diagonally down since we would be starting at either col = 6 or row = 0
@@ -151,6 +171,7 @@ public class GameLogic {
 				if (buttons[c - i][r + i].getPlayer() != p) {
 					return false;
 				}
+				//winningButtons.add(b1);
 			}
 			return true;
 		} else {
@@ -158,6 +179,7 @@ public class GameLogic {
 				if (buttons[c - traverse][r + traverse].getPlayer() == p) {
 					counter++;
 					traverse++;
+					//winningButtons.add(b1);
 				} else if (counter >= 3) {
 					return true;
 				} else {
@@ -173,6 +195,7 @@ public class GameLogic {
 				if (buttons[c + traverse][r - traverse].getPlayer() == p) {
 					traverse++;
 					counter++;
+					//winningButtons.add(b1);
 				} else if (counter >= 3) {
 					return true;
 				} else {
@@ -198,10 +221,13 @@ public class GameLogic {
 		if (winVertical(buttons, b1)
 			|| winHorizontal(buttons, b1) 
 		  	|| winDiagonalDown(buttons, b1)
-			|| winDiagonalUp(buttons, b1)) {
+			|| winDiagonalUp(buttons, b1)
+			) {
 			stats.add("Player " + b1.getPlayer() + " won!");
 			return true;
 		} else if (gameTie(buttons)) {
+			setTie(true);
+			this.tie = true;
 			stats.add("Game is a tie!");
 			return false;
 		} else {
